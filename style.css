@@ -697,17 +697,30 @@ body {
     }
 
     /* Ubah daftar menu jadi Dropdown melayang */
-   .nav-links {
+   /* Ubah daftar menu jadi Dropdown melayang di bawah navbar */
+    .nav-links {
+        position: absolute; /* KUNCI UTAMA: Biar menunya lepas dari logo dan melayang */
+        top: 100%; /* Turun tepat ke bawah garis navbar */
+        right: 0; /* Paksa mentok ke ujung kanan layar */
+        width: 100%; /* Lebar memenuhi layar */
+        background-color: rgba(30, 30, 30, 0.95); /* Background gelap biar teks jelas */
         display: flex;
-        flex-direction: column; /* Memastikan menu numpuk ke bawah */
-        align-items: flex-end; /* KUNCI UTAMA: Mendorong semua menu ke rata kanan */
-        width: 100%;
-        gap: 15px; /* Jarak atas-bawah antar menu */
-        padding-right: 20px; /* Biar tulisannya nggak terlalu mepet banget ke tepi layar */
-        padding-bottom: 20px;
+        flex-direction: column; 
+        align-items: flex-end; /* Rata kanan */
+        gap: 15px; 
+        padding-top: 15px;
+        padding-right: 25px; /* Jarak aman dari ujung kanan layar */
+        padding-bottom: 25px;
+        border-bottom: 1px solid rgba(250, 252, 235, 0.1); /* Garis bawah tipis ala UI modern */
+        
+        /* Animasi sembunyi (akan dipicu JS saat tombol hamburger diklik) */
+        transform: translateY(-10px);
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.3s ease;
     }
 
-    /* Class yang akan dipicu oleh JavaScript saat tombol diklik */
+    /* Class yang dipicu oleh JavaScript saat tombol diklik */
     .nav-links.active {
         transform: translateY(0);
         opacity: 1;
