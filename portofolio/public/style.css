@@ -1,0 +1,725 @@
+/* --- PALET WARNA (DARI QUIVEX) --- */
+:root {
+    --neon-green: #FAFCEB;
+    --dark-grey: #1E1E1E; /* Off-black */
+    --off-white: #FAFCEB; /* Off-white bersih */
+    --red-art: #FF0000; /* Merah untuk "THE ART" */
+}
+
+/* Pengaturan Dasar & Smooth Scroll */
+html {
+    scroll-behavior: smooth;
+    font-family: 'Poppins', sans-serif; /* Default sans-serif modern */
+    background-color: transparent !important; /* Dibuat transparan agar kanvas partikel terlihat */
+    color: var(--off-white); /* Teks default off-white */
+}
+
+body { 
+    margin: 0; 
+    padding: 0; 
+    background-color: transparent !important; /* Dibuat transparan agar kanvas partikel terlihat */
+}
+
+/* Partikel Latar Belakang */
+#bg-text-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: -1;
+    pointer-events: none;
+    overflow: hidden;
+    background-color: var(--dark-grey); /* Latar belakang gelap */
+}
+
+/* Partikel Teks Terapung */
+
+.bg-text-particle {
+    position: absolute;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+    user-select: none;
+    font-family: 'Playfair Display', serif;
+    font-weight: 900; /* Dibuat mentok ke tingkat paling tebal (Black) */
+    color: #FAFCEB; 
+    /* Efek garis luar agar huruf lebih gemuk */
+    -webkit-text-stroke: 1px rgba(250, 252, 235, 0.8); 
+    /* Glow dua lapis biar lebih menyala */
+    text-shadow: 0 0 15px rgba(250, 252, 235, 0.8), 0 0 5px rgba(250, 252, 235, 0.9); 
+    will-change: transform;
+    white-space: nowrap;
+    transition: color 0.4s, text-shadow 0.4s;
+}
+
+/* Variasi warna merah neon yang menyala halus */
+.bg-text-particle.red-glow {
+    color: #FF0000; 
+    -webkit-text-stroke: 1px rgba(255, 0, 0, 0.8); 
+    text-shadow: 0 0 15px rgba(255, 0, 0, 0.8), 0 0 5px rgba(255, 0, 0, 0.9); 
+}
+
+/* Letupan Teks Sparks Kecil */
+.spark-text-particle {
+    position: absolute;
+    pointer-events: none;
+    user-select: none;
+    font-family: 'Poppins', sans-serif;
+    font-weight: bold;
+    font-size: 0.8rem;
+    will-change: transform, opacity;
+}
+
+/* --- NAVIGASI (SANS-SERIF) --- */
+/* Update bagian navbar ini */
+.navbar {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    background-color: rgba(30, 30, 30, 0.9);
+    color: var(--off-white);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    
+    /* UBAH DI SINI: Ganti angka 1rem menjadi 0.5rem (atau 10px) agar atas-bawahnya lebih tipis */
+    padding: 0.5rem 2rem; 
+    
+    z-index: 1000;
+    box-sizing: border-box;
+}
+
+/* TAMBAHKAN KODE INI TEPAT DI BAWAH KODE .NAVBAR */
+.navbar .logo {
+    margin: 0; /* Menghilangkan jarak bawaan yang bikin navbar neken ke bawah */
+    font-size: 2rem; /* Lo bisa ngecilin angkanya kalau tulisan Uzi. di pojok masih terasa kebesaran */
+}
+
+.nav-links { list-style: none; display: flex; gap: 20px; }
+.nav-links a { color: var(--off-white); text-decoration: none; font-weight: bold; transition: color 0.3s; }
+.nav-links a:hover { color: var(--neon-green); }
+
+/* --- TATA LETAK SECTION --- */
+.section {
+    min-height: 100vh;
+    padding: 100px 20px 20px 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+/* --- JUDUL BAGIAN UTAMA (RED SERIF "THE ART") --- */
+.oversized-red-serif {
+    font-family: 'Playfair Display', serif; /* Serif tebal ala Quivex/The Art */
+    font-size: 3rem; /* Ukuran besar */
+    font-weight: 700;
+    color: var(--red-art); /* Warna merah */
+    letter-spacing: -2px; /* Jarak huruf rapat ala poster */
+    margin-bottom: 30px;
+    text-transform: uppercase; /* Huruf kapital semua */
+}
+
+/* --- GAYA BENTO GRID --- */
+.bento-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    width: 80%;
+    max-width: 1000px;
+}
+
+/* --- GAYA KARTU INSET (DARI QUIVEX) --- */
+.card {
+    padding: 30px;
+    border-radius: 24px; /* Sudut membulat */
+    position: relative; /* Untuk pseudo-element inset */
+}
+
+/* Efek inset dengan Pseudo-element */
+.inset-card::before {
+    content: '';
+    position: absolute;
+    top: -5px;
+    left: -5px;
+    right: -5px;
+    bottom: -5px;
+    border: 3px solid transparent; /* Garis tepi inset */
+    border-radius: 29px; /* Sesuaikan sudut */
+    z-index: -1;
+    transition: border-color 0.3s;
+}
+
+/* Efek hover inset */
+.inset-card:hover::before {
+    border-color: var(--neon-green);
+}
+
+/* Pewarnaan Kartu */
+.neon-card { background-color: var(--neon-green); color: var(--dark-grey); }
+.dark-card { background-color: var(--dark-grey); color: var(--off-white); }
+.off-white-card { background-color: var(--off-white); color: var(--dark-grey); }
+
+/* --- TIPOGRAFI DALAM KARTU --- */
+.quivex-serif { font-family: 'Playfair Display', serif; font-weight: 700; color: inherit; } /* Serif */
+.quivex-sans-serif { font-family: 'Poppins', sans-serif; font-weight: 400; color: inherit; } /* Sans-serif */
+.art-script { font-family: 'Great Vibes', cursive; color: inherit; } /* Skrip elegan */
+
+/* Gaya khusus teks off-black */
+.off-black { color: var(--dark-grey); }
+
+/* Judul Kotak (`h3`) */
+.card h3 { font-family: 'Playfair Display', serif; font-size: 1.5rem; color: inherit; }
+
+/* Teks Isi Kotak (`p`) */
+.card p { font-family: 'Poppins', sans-serif; font-size: 1rem; color: inherit; }
+
+/* --- BAGIAN PROFIL CENTERPIECE (DUA KOLOM) --- */
+#main-profile-card {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+    background-color: var(--neon-green); /* Latar belakang neon */
+    color: var(--dark-grey); /* Teks off-black */
+    padding: 0;
+    overflow: hidden; /* Pastikan foto terpotong sudut membulat */
+    width: 90%;
+    max-width: 1200px;
+}
+
+.card-left {
+    background-color: var(--off-white); 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 24px 0 0 24px;
+    padding: 30px; /* Tambahkan padding agar foto tidak terlalu mepet ke ujung kotak */
+}
+
+/* Modifikasi untuk Galeri Profil (Crossfade) */
+.profile-gallery {
+    display: grid;
+    width: 100%;
+    max-width: 280px;
+    aspect-ratio: 4 / 5; /* Rasio potrait untuk foto profil */
+    border-radius: 16px;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.15); /* Bayangan diaplikasikan pada container */
+    overflow: hidden; /* Mencegah gambar meluber dari radius container */
+}
+
+.profile-gallery img {
+    grid-area: 1 / 1; /* Semua foto menempati tempat yang sama (bertumpuk) */
+    width: 100%; 
+    height: 100%; 
+    object-fit: cover; /* Agar gambar tidak gepeng tapi memenuhi container */
+    opacity: 0;
+    animation: profileFade 12s infinite; /* 3 gambar x 4 detik = 12 detik */
+}
+
+/* Waktu mulai animasi yang berbeda untuk tiap gambar */
+.profile-gallery img:nth-child(1) {
+    animation-delay: 0s;
+}
+.profile-gallery img:nth-child(2) {
+    animation-delay: 4s;
+}
+.profile-gallery img:nth-child(3) {
+    animation-delay: 8s;
+}
+
+/* 
+  Animasi Fade:
+  Total 12 detik, setiap gambar tampil sekitar 4 detik (33.33%)
+  Transisi fade in & fade out dibuat smooth (sekitar 1 detik)
+*/
+@keyframes profileFade {
+    0% { opacity: 0; }
+    8% { opacity: 1; }  /* Fade in */
+    33% { opacity: 1; } /* Tetap tampil penuh */
+    41% { opacity: 0; } /* Fade out */
+    100% { opacity: 0; }
+}
+
+.card-right {
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+/* Logo di profil ala Quivex */
+.card-right .logo { font-size: 3rem; margin: 0; letter-spacing: -2px; }
+.card-right .tagline { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 2px; margin: 0; }
+.quivex-bottom-tag { align-self: flex-end; margin-top: auto; } /* Tagline di bawah */
+
+#text-split.text-xl { font-size: 1.2rem; font-weight: 400; line-height: 1.5; margin: 20px 0; }
+
+.identitas { margin-top: 30px; }
+.identitas .art-script { font-size: 1.2rem; }
+
+/* --- LOGIKA ANIMASI MELUNCUR (SLIDE-UP) --- */
+.slide-up {
+    opacity: 0;
+    transform: translateY(80px);
+    transition: opacity 0.8s ease-out, transform 0.8s ease-out; 
+}
+
+.slide-up.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.delay-1 { transition-delay: 0.2s; }
+
+/* Class untuk rata tengah */
+.teks-tengah { text-align: center; }
+
+/* Membantu Anime.js */
+.clip { overflow: hidden; display: inline-block; vertical-align: top; }
+.char { display: inline-block; }
+
+/* --- GAYA UNTUK GALERI BERGULIR (MARQUEE) --- */
+.marquee-track {
+    display: flex;
+    width: max-content;
+    /* Durasi 20s (detik). Kalau kememcepetan, besarin angkanya (misal: 30s) */
+    animation: scroll-kiri 20s linear infinite; 
+}
+
+/* Mengatur ukuran foto-foto di dalam galeri */
+.marquee-track img {
+    height: 250px; /* Tinggi foto disamaratakan */
+    width: auto; /* Lebar menyesuaikan rasio asli foto */
+    border-radius: 16px; /* Ujung melengkung */
+    margin-right: 20px; /* Jarak antar foto */
+    object-fit: cover; /* Biar foto nggak gepeng */
+}
+
+/* Bonus: Animasi berhenti kalau fotonya disentuh/di-hover kursor */
+.marquee-track:hover {
+    animation-play-state: paused;
+}
+
+/* Mesin penggerak animasinya */
+@keyframes scroll-kiri {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        /* Bergeser tepat 50% (sepanjang Set 1), lalu mengulang lagi dari awal */
+        transform: translateX(-50%); 
+    }
+}
+
+/* ==========================================
+   4. INTERACTIVE PLAYGROUND (CANVAS PARTICLE)
+   ========================================== */
+#playground {
+    position: relative;
+    width: 100%;
+    min-height: 100vh;
+    padding: 100px 20px 40px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    box-sizing: border-box;
+}
+
+.playground-container {
+    display: flex;
+    flex-direction: row;
+    gap: 30px;
+    width: 90%;
+    max-width: 1200px;
+    align-items: stretch;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+@media (max-width: 992px) {
+    .playground-container {
+        flex-direction: column;
+        align-items: center;
+    }
+}
+
+.canvas-wrapper {
+    position: relative;
+    flex: 7;
+    height: 550px;
+    width: 100%;
+    background: rgba(20, 20, 20, 0.6);
+    border: 2px solid rgba(250, 252, 235, 0.1);
+    border-radius: 24px;
+    box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.6), 0 10px 30px rgba(0, 0, 0, 0.5);
+    overflow: hidden;
+    backdrop-filter: blur(10px);
+    transition: border-color 0.3s;
+}
+
+.canvas-wrapper:hover {
+    border-color: rgba(250, 252, 235, 0.3);
+}
+
+#particle-canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    cursor: default;
+}
+
+.playground-instruction {
+    position: absolute;
+    bottom: 15px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(30, 30, 30, 0.85);
+    color: var(--off-white);
+    padding: 8px 18px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    pointer-events: none;
+    font-family: 'Poppins', sans-serif;
+    border: 1px solid rgba(250, 252, 235, 0.2);
+    letter-spacing: 0.5px;
+    z-index: 10;
+    text-align: center;
+    backdrop-filter: blur(5px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+
+/* Glassmorphism Detail Card */
+.detail-card-wrapper {
+    flex: 3;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-width: 320px;
+    width: 100%;
+    height: 550px;
+}
+
+.detail-card {
+    background: rgba(30, 30, 30, 0.7);
+    border: 2px solid rgba(250, 252, 235, 0.1);
+    border-radius: 24px;
+    padding: 30px;
+    color: var(--off-white);
+    backdrop-filter: blur(15px);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+    transition: all 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+    opacity: 0;
+    transform: translateY(20px);
+    pointer-events: none;
+    height: 100%;
+    display: none;
+    flex-direction: column;
+    justify-content: flex-start;
+    box-sizing: border-box;
+}
+
+.detail-card.active {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: all;
+    display: flex;
+    border-color: var(--theme-color, var(--neon-green));
+    box-shadow: 0 0 25px rgba(var(--theme-color-rgb, 250, 252, 235), 0.15), 0 15px 35px rgba(0, 0, 0, 0.5);
+}
+
+.detail-card-placeholder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: rgba(250, 252, 235, 0.5);
+    border: 2px dashed rgba(250, 252, 235, 0.15);
+    border-radius: 24px;
+    padding: 40px;
+    height: 100%;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+    transition: all 0.3s;
+}
+
+.detail-card-placeholder.hidden {
+    display: none;
+}
+
+.detail-card-placeholder svg {
+    margin-bottom: 20px;
+    stroke: rgba(250, 252, 235, 0.4);
+    animation: pulse-slow 3s infinite ease-in-out;
+}
+
+@keyframes pulse-slow {
+    0%, 100% { opacity: 0.4; transform: scale(1); }
+    50% { opacity: 0.8; transform: scale(1.05); }
+}
+
+.detail-header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid rgba(250, 252, 235, 0.1);
+    padding-bottom: 15px;
+    width: 100%;
+}
+
+.detail-logo {
+    width: 50px;
+    height: 50px;
+    object-fit: contain;
+}
+
+.detail-title-group {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.detail-title-group h3 {
+    margin: 0;
+    font-size: 1.6rem;
+    font-family: 'Playfair Display', serif;
+    letter-spacing: 0.5px;
+}
+
+.detail-badge {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    background: var(--theme-color-rgba, rgba(250, 252, 235, 0.1));
+    color: var(--theme-color, var(--off-white));
+    margin-top: 5px;
+    letter-spacing: 1px;
+    border: 1px solid var(--theme-color, var(--neon-green));
+}
+
+.detail-body {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    width: 100%;
+}
+
+.detail-body p {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin: 0;
+    color: rgba(250, 252, 235, 0.85);
+    text-align: left;
+}
+
+.detail-stats {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 10px;
+    width: 100%;
+}
+
+.detail-info-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.85rem;
+    border-bottom: 1px solid rgba(250, 252, 235, 0.05);
+    padding-bottom: 8px;
+    width: 100%;
+}
+
+.detail-info-row span {
+    color: rgba(250, 252, 235, 0.6);
+}
+
+.detail-info-row strong {
+    color: var(--theme-color, var(--neon-green));
+    font-weight: 600;
+}
+
+.detail-close-btn {
+    align-self: flex-end;
+    background: none;
+    border: 1px solid rgba(250, 252, 235, 0.2);
+    color: var(--off-white);
+    padding: 8px 16px;
+    border-radius: 12px;
+    cursor: pointer;
+    font-size: 0.8rem;
+    margin-top: 15px;
+    transition: all 0.3s;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+}
+
+.detail-close-btn:hover {
+    background: var(--off-white);
+    color: var(--dark-grey);
+    border-color: var(--off-white);
+}
+
+/* --- EFEK OMBAK (WAVE HOVER) UNTUK NAVBAR --- */
+.wave-text {
+    display: inline-flex;
+}
+
+.wave-text span {
+    display: inline-block;
+    transition: color 0.3s ease;
+}
+
+/* Saat kursor diarahkan ke kata, jalankan animasi pada setiap hurufnya */
+.wave-text:hover span {
+    color: var(--neon-green); /* Tetap berubah warna ke hijau neon */
+    animation: gelombang 0.5s ease-in-out;
+    
+    /* INI KUNCINYA: Mengatur jeda tiap huruf supaya jadi ombak berurutan */
+    animation-delay: calc(0.05s * var(--i)); 
+}
+
+/* Kunci pergerakan: Naik, sedikit memutar, lalu kembali turun */
+@keyframes gelombang {
+    0% { transform: translateY(0) rotate(0); }
+    35% { transform: translateY(-8px) rotate(-10deg); } /* Tarik ke atas & miringkan ke kiri */
+    70% { transform: translateY(3px) rotate(5deg); }    /* Turun sedikit & miringkan ke kanan (memantul) */
+    100% { transform: translateY(0) rotate(0); }
+}
+
+/* --- GAYA KHUSUS KONTAK & FOOTER --- */
+.contact-list {
+    list-style: none;
+    padding: 0;
+    margin: 20px 0 0 0;
+}
+
+.contact-list li {
+    margin-bottom: 18px;
+}
+
+.contact-link {
+    color: var(--off-white);
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+/* Efek mikro-interaksi: teks bergeser ke kanan & menyala hijau neon saat disentuh kursor */
+.contact-link:hover .link-text {
+    color: var(--neon-green);
+    transform: translateX(8px);
+    text-shadow: 0 0 8px rgba(250, 252, 235, 0.6);
+}
+
+.contact-link .link-text {
+    display: inline-block;
+    transition: transform 0.3s ease, color 0.3s ease;
+}
+
+/* Garis pembatas halus untuk hak cipta di bawah */
+.footer-bottom {
+    margin-top: 60px;
+    text-align: center;
+    font-size: 0.85rem;
+    color: rgba(250, 252, 235, 0.5);
+    border-top: 1px solid rgba(250, 252, 235, 0.1);
+    padding-top: 25px;
+    width: 100%;
+}
+
+.footer-bottom p {
+    margin: 0;
+}
+
+/* --- EFEK KACA BURAM (GLASSMORPHISM) UNTUK JUDUL --- */
+.section-title {
+    position: relative;
+    z-index: 10;
+    display: inline-block; /* Biar kotaknya ngepas sama panjang tulisan */
+    padding: 10px 25px;
+    border-radius: 12px;
+    
+    /* Background semi-transparan & efek blur (sensor) */
+    background: rgba(30, 30, 30, 0.4); 
+    backdrop-filter: blur(6px); /* Ini yang bikin partikel di belakang jadi blur */
+    -webkit-backdrop-filter: blur(6px);
+    
+    /* Garis tepi super tipis biar makin mirip kaca */
+    border: 1px solid rgba(250, 252, 235, 0.1); 
+}
+
+/* ========================================== */
+/* TAMPILAN RESPONSIVE (KHUSUS LAYAR HP)      */
+/* ========================================== */
+
+@media (max-width: 768px) {
+    /* 1. Mengatur Navbar agar tidak berdesakan */
+    .navbar {
+        padding: 10px 15px;
+        flex-direction: column; /* Tumpuk logo di atas, menu di bawah */
+        gap: 15px;
+    }
+    
+    .nav-links {
+        flex-wrap: wrap; /* Jika menu kepanjangan, otomatis turun ke baris baru */
+        justify-content: center;
+        gap: 15px;
+    }
+
+    /* 2. Memperbaiki Kotak Profil Utama (Card Left & Right) */
+    #main-profile-card {
+        display: flex; /* Mengubah grid menjadi flexbox agar mudah ditumpuk */
+        flex-direction: column; /* Paksa tumpuk atas-bawah */
+    }
+
+    .card-left {
+        border-radius: 24px 24px 0 0; /* Lengkungan disesuaikan hanya di atas */
+        padding: 20px;
+    }
+
+    .card-right {
+        border-radius: 0 0 24px 24px; /* Lengkungan disesuaikan hanya di bawah */
+        padding: 25px 20px;
+        text-align: center; /* Teks dibuat rata tengah agar lebih manis di HP */
+    }
+
+    /* Memastikan identitas diri juga rata tengah */
+    .identitas {
+        text-align: left; /* Teks rincian tetap rata kiri agar mudah dibaca */
+        display: inline-block; /* Membantu posisi agar tetap rapi di tengah kotak */
+    }
+
+    /* 3. Memperbaiki ukuran teks yang terlalu raksasa di HP */
+    .section-title {
+        font-size: 2rem; /* Perkecil judul section */
+        padding: 8px 15px;
+    }
+
+    .text-xl {
+        font-size: 1.1rem; /* Perkecil teks deskripsi profil */
+    }
+
+    /* 4. Memastikan Bento Grid jadi 1 kolom lurus ke bawah */
+    .bento-grid {
+        grid-template-columns: 1fr; /* Paksa jadi 1 kolom vertikal penuh */
+        gap: 15px; /* Jarak antar kotak sedikit dirapatkan */
+    }
+    
+    /* 5. Menyesuaikan lebar galeri bergulir */
+    #galeri .card {
+        width: 95% !important; 
+    }
+}
