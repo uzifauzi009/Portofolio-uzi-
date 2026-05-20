@@ -666,25 +666,38 @@ body {
 /* ========================================== */
 
 @media (max-width: 768px) {
-   /* 1. Navbar dibikin lebih langsing dan rapat */
+   /* 1. Navbar dibuat seminimal mungkin */
     .navbar {
-        padding: 8px 12px; 
-        flex-direction: column; /* Tetap ditumpuk atas-bawah biar aman */
-        gap: 8px; /* Jarak antara logo dan menu diperkecil */
+        padding: 10px; 
+        flex-direction: column;
+        gap: 5px; 
     }
     
-    /* 2. Ukuran teks menu diperkecil */
+    /* 2. Menu dibuat 1 baris & bisa digeser ke samping (Scrollable) */
     .nav-links {
-        flex-wrap: wrap; 
-        justify-content: center;
-        gap: 10px; /* Jarak antar tombol menu dirapatkan */
+        display: flex;
+        flex-wrap: nowrap; /* Paksa tetap 1 baris, JANGAN turun ke bawah */
+        overflow-x: auto; /* Aktifkan geser kiri-kanan */
+        justify-content: flex-start; 
+        width: 100%;
+        gap: 8px;
+        padding-bottom: 5px; /* Jarak aman di bawah menu */
+        
+        /* Sembunyikan scrollbar bawaan biar tetap rapi (Opsional) */
+        -ms-overflow-style: none;  
+        scrollbar-width: none;  
+    }
+    
+    .nav-links::-webkit-scrollbar { 
+        display: none; 
     }
 
+    /* 3. Ukuran tombol menu disesuaikan biar pas di jari */
     .nav-links a {
-        font-size: 0.85rem; /* Mengecilkan ukuran huruf menu */
-        padding: 6px 12px; /* Mengecilkan area background/kotak menu */
+        white-space: nowrap; /* Teks nggak boleh terpotong ke bawah */
+        font-size: 0.8rem; 
+        padding: 6px 12px;
     }
-
     /* 3. Mengecilkan ukuran nama/logo di navbar (kalau ada) */
     .navbar h1, .navbar .logo {
         font-size: 1.2rem; 
