@@ -697,23 +697,14 @@ body {
     }
 
     /* Ubah daftar menu jadi Dropdown melayang */
-    .nav-links {
-        position: absolute;
-        top: 100%; /* Turun ke bawah navbar */
-        left: 0;
+   .nav-links {
+        display: flex;
+        flex-direction: column; /* Memastikan menu numpuk ke bawah */
+        align-items: flex-end; /* KUNCI UTAMA: Mendorong semua menu ke rata kanan */
         width: 100%;
-        background-color: rgba(20, 20, 20, 0.95);
-        backdrop-filter: blur(10px);
-        flex-direction: column; /* Menu berbaris dari atas ke bawah */
-        padding: 20px 0;
-        gap: 15px;
-        z-index: 100;
-        
-        /* Sembunyikan menu secara default */
-        transform: translateY(-150%);
-        opacity: 0;
-        visibility: hidden;
-        transition: transform 0.4s ease, opacity 0.4s ease;
+        gap: 15px; /* Jarak atas-bawah antar menu */
+        padding-right: 20px; /* Biar tulisannya nggak terlalu mepet banget ke tepi layar */
+        padding-bottom: 20px;
     }
 
     /* Class yang akan dipicu oleh JavaScript saat tombol diklik */
@@ -724,10 +715,8 @@ body {
     }
 
     .nav-links a {
-        font-size: 1.1rem;
-        width: 80%;
-        text-align: center;
-        display: block; /* Biar area klik menunya lebih luas */
+        text-align: right; /* Memastikan teks di dalam tombol juga rata kanan */
+        font-size: 1rem; 
     }
     /* 3. Mengecilkan ukuran nama/logo di navbar (kalau ada) */
     .navbar h1, .navbar .logo {
