@@ -666,17 +666,29 @@ body {
 /* ========================================== */
 
 @media (max-width: 768px) {
-    /* 1. Mengatur Navbar agar tidak berdesakan */
+   /* 1. Navbar dibikin lebih langsing dan rapat */
     .navbar {
-        padding: 10px 15px;
-        flex-direction: column; /* Tumpuk logo di atas, menu di bawah */
-        gap: 15px;
+        padding: 8px 12px; 
+        flex-direction: column; /* Tetap ditumpuk atas-bawah biar aman */
+        gap: 8px; /* Jarak antara logo dan menu diperkecil */
     }
     
+    /* 2. Ukuran teks menu diperkecil */
     .nav-links {
-        flex-wrap: wrap; /* Jika menu kepanjangan, otomatis turun ke baris baru */
+        flex-wrap: wrap; 
         justify-content: center;
-        gap: 15px;
+        gap: 10px; /* Jarak antar tombol menu dirapatkan */
+    }
+
+    .nav-links a {
+        font-size: 0.85rem; /* Mengecilkan ukuran huruf menu */
+        padding: 6px 12px; /* Mengecilkan area background/kotak menu */
+    }
+
+    /* 3. Mengecilkan ukuran nama/logo di navbar (kalau ada) */
+    .navbar h1, .navbar .logo {
+        font-size: 1.2rem; 
+        margin: 0;
     }
 
     /* 2. Memperbaiki Kotak Profil Utama (Card Left & Right) */
