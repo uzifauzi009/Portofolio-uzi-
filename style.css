@@ -661,42 +661,73 @@ body {
     border: 1px solid rgba(250, 252, 235, 0.1); 
 }
 
+/* --- HAMBURGER MENU (SEMBUNYI DI LAPTOP) --- */
+.menu-toggle {
+    display: none;
+    flex-direction: column;
+    cursor: pointer;
+    gap: 5px;
+}
+
+.menu-toggle .bar {
+    width: 25px;
+    height: 3px;
+    background-color: var(--off-white);
+    border-radius: 3px;
+    transition: all 0.3s ease;
+}
+
 /* ========================================== */
 /* TAMPILAN RESPONSIVE (KHUSUS LAYAR HP)      */
 /* ========================================== */
 
 @media (max-width: 768px) {
-   /* 1. Navbar dibuat seminimal mungkin */
+   /* Tampilan Navbar Mode HP */
     .navbar {
-        padding: 10px; 
-        flex-direction: column;
-        gap: 5px; 
+        padding: 15px 20px;
+        flex-direction: row; /* Logo dan tombol sejajar kiri-kanan */
+        justify-content: space-between;
+        align-items: center;
+        position: relative; /* Penting untuk posisi menu dropdown */
     }
     
-    /* 2. Menu dibuat 1 baris & bisa digeser ke samping (Scrollable) */
-    .nav-links {
+    /* Munculkan Tombol Garis Tiga */
+    .menu-toggle {
         display: flex;
-        flex-wrap: nowrap; /* Paksa tetap 1 baris, JANGAN turun ke bawah */
-        overflow-x: auto; /* Aktifkan geser kiri-kanan */
-        justify-content: flex-start; 
-        width: 100%;
-        gap: 8px;
-        padding-bottom: 5px; /* Jarak aman di bawah menu */
-        
-        /* Sembunyikan scrollbar bawaan biar tetap rapi (Opsional) */
-        -ms-overflow-style: none;  
-        scrollbar-width: none;  
-    }
-    
-    .nav-links::-webkit-scrollbar { 
-        display: none; 
     }
 
-    /* 3. Ukuran tombol menu disesuaikan biar pas di jari */
+    /* Ubah daftar menu jadi Dropdown melayang */
+    .nav-links {
+        position: absolute;
+        top: 100%; /* Turun ke bawah navbar */
+        left: 0;
+        width: 100%;
+        background-color: rgba(20, 20, 20, 0.95);
+        backdrop-filter: blur(10px);
+        flex-direction: column; /* Menu berbaris dari atas ke bawah */
+        padding: 20px 0;
+        gap: 15px;
+        z-index: 100;
+        
+        /* Sembunyikan menu secara default */
+        transform: translateY(-150%);
+        opacity: 0;
+        visibility: hidden;
+        transition: transform 0.4s ease, opacity 0.4s ease;
+    }
+
+    /* Class yang akan dipicu oleh JavaScript saat tombol diklik */
+    .nav-links.active {
+        transform: translateY(0);
+        opacity: 1;
+        visibility: visible;
+    }
+
     .nav-links a {
-        white-space: nowrap; /* Teks nggak boleh terpotong ke bawah */
-        font-size: 0.8rem; 
-        padding: 6px 12px;
+        font-size: 1.1rem;
+        width: 80%;
+        text-align: center;
+        display: block; /* Biar area klik menunya lebih luas */
     }
     /* 3. Mengecilkan ukuran nama/logo di navbar (kalau ada) */
     .navbar h1, .navbar .logo {

@@ -19,3 +19,19 @@ const observer = new IntersectionObserver((entries, observer) => {
 }, observerOptions);
 
 slideElements.forEach(el => observer.observe(el));
+
+// --- HAMBURGER MENU TOGGLE ---
+const mobileMenu = document.getElementById('mobile-menu');
+const navLinks = document.querySelector('.nav-links');
+
+mobileMenu.addEventListener('click', () => {
+    navLinks.classList.toggle('active');
+});
+
+// Tutup menu otomatis kalau salah satu menunya diklik
+const navItems = document.querySelectorAll('.nav-links a');
+navItems.forEach(item => {
+    item.addEventListener('click', () => {
+        navLinks.classList.remove('active');
+    });
+});
