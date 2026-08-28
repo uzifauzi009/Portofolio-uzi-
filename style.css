@@ -1,9 +1,10 @@
-/* --- PALET WARNA (DARI QUIVEX) --- */
+/* --- PALET WARNA BARU (DARK ELEGAN & NEON BLUE) --- */
 :root {
-    --neon-green: #FAFCEB;
-    --dark-grey: #1E1E1E; /* Off-black */
-    --off-white: #FAFCEB; /* Off-white bersih */
-    --red-art: #FF0000; /* Merah untuk "THE ART" */
+    --neon-green: #00E5FF; /* Aksen hijau diubah jadi biru cyan */
+    --dark-grey: #050505; /* Latar belakang hitam pekat ekstrim */
+    --off-white: #E0E0E0; /* Teks putih keabu-abuan redup */
+    --card-bg: #111111; /* Latar kotak bento sangat gelap */
+    --red-art: #0088FF; /* Warna judul diubah ke biru solid */
 }
 
 /* Pengaturan Dasar & Smooth Scroll */
@@ -34,7 +35,6 @@ body {
 }
 
 /* Partikel Teks Terapung */
-
 .bg-text-particle {
     position: absolute;
     top: 0;
@@ -42,22 +42,21 @@ body {
     pointer-events: none;
     user-select: none;
     font-family: 'Playfair Display', serif;
-    font-weight: 900; /* Dibuat mentok ke tingkat paling tebal (Black) */
-    color: #FAFCEB; 
-    /* Efek garis luar agar huruf lebih gemuk */
-    -webkit-text-stroke: 1px rgba(250, 252, 235, 0.8); 
-    /* Glow dua lapis biar lebih menyala */
-    text-shadow: 0 0 15px rgba(250, 252, 235, 0.8), 0 0 5px rgba(250, 252, 235, 0.9); 
+    font-weight: 900; 
+    /* Warna partikel biru dasar */
+    color: rgba(0, 136, 255, 0.15); 
+    -webkit-text-stroke: 1px rgba(0, 136, 255, 0.3); 
+    text-shadow: 0 0 15px rgba(0, 136, 255, 0.2); 
     will-change: transform;
     white-space: nowrap;
     transition: color 0.4s, text-shadow 0.4s;
 }
 
-/* Variasi warna merah neon yang menyala halus */
-.bg-text-particle.red-glow {
-    color: #FF0000; 
-    -webkit-text-stroke: 1px rgba(255, 0, 0, 0.8); 
-    text-shadow: 0 0 15px rgba(255, 0, 0, 0.8), 0 0 5px rgba(255, 0, 0, 0.9); 
+/* Variasi warna biru neon yang menyala terang */
+.bg-text-particle.blue-glow {
+    color: rgba(0, 229, 255, 0.3); 
+    -webkit-text-stroke: 1px rgba(0, 229, 255, 0.5); 
+    text-shadow: 0 0 20px rgba(0, 229, 255, 0.5), 0 0 10px rgba(0, 229, 255, 0.8); 
 }
 
 /* Letupan Teks Sparks Kecil */
@@ -77,7 +76,9 @@ body {
     position: fixed;
     top: 0;
     width: 100%;
-    background-color: rgba(30, 30, 30, 0.9);
+    background-color: rgba(5, 5, 5, 0.98);
+    border-bottom: 1px solid rgba(0, 229, 255, 0.35);
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.45);
     color: var(--off-white);
     display: flex;
     justify-content: space-between;
@@ -96,9 +97,43 @@ body {
     font-size: 2rem; /* Lo bisa ngecilin angkanya kalau tulisan Uzi. di pojok masih terasa kebesaran */
 }
 
-.nav-links { list-style: none; display: flex; gap: 20px; }
-.nav-links a { color: var(--off-white); text-decoration: none; font-weight: bold; transition: color 0.3s; }
+.nav-links {
+    --nav-indicator-left: 0px;
+    --nav-indicator-width: 0px;
+    position: relative;
+    list-style: none;
+    display: flex;
+    gap: 20px;
+    padding: 6px;
+    margin: 0;
+}
+
+.nav-links::before {
+    content: '';
+    position: absolute;
+    top: 3px;
+    left: 0;
+    width: var(--nav-indicator-width);
+    height: calc(100% - 6px);
+    border: 1px solid rgba(0, 229, 255, 0.8);
+    border-radius: 12px;
+    background: rgba(0, 136, 255, 0.78);
+    box-shadow: 0 0 16px rgba(0, 229, 255, 0.32);
+    transform: translateX(var(--nav-indicator-left));
+    transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1), width 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+    pointer-events: none;
+}
+
+.nav-links li,
+.nav-links a {
+    position: relative;
+    z-index: 1;
+}
+
+.nav-links li { display: flex; }
+.nav-links a { color: #ffffff; text-decoration: none; font-weight: 600; transition: color 0.3s, text-shadow 0.3s; }
 .nav-links a:hover { color: var(--neon-green); }
+.nav-links a[aria-current="page"] { color: #ffffff; text-shadow: 0 0 8px rgba(255, 255, 255, 0.35); }
 
 /* --- TATA LETAK SECTION --- */
 .section {
@@ -108,6 +143,20 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    position: relative;
+    isolation: isolate;
+}
+
+.section:nth-of-type(even) {
+    background: linear-gradient(180deg, rgba(0, 136, 255, 0.045), rgba(0, 136, 255, 0.012));
+}
+
+.section:nth-of-type(odd)::before {
+    display: none;
+}
+
+#kontak {
+    background: transparent;
 }
 
 /* --- JUDUL BAGIAN UTAMA (RED SERIF "THE ART") --- */
@@ -116,7 +165,7 @@ body {
     font-size: 3rem; /* Ukuran besar */
     font-weight: 700;
     color: var(--red-art); /* Warna merah */
-    letter-spacing: -2px; /* Jarak huruf rapat ala poster */
+    letter-spacing: 0;
     margin-bottom: 30px;
     text-transform: uppercase; /* Huruf kapital semua */
 }
@@ -156,6 +205,11 @@ body {
     border-color: var(--neon-green);
 }
 
+#galeri .inset-card::before,
+#galeri .inset-card:hover::before {
+    border-color: transparent;
+}
+
 /* Pewarnaan Kartu */
 .neon-card { background-color: var(--neon-green); color: var(--dark-grey); }
 .dark-card { background-color: var(--dark-grey); color: var(--off-white); }
@@ -167,7 +221,7 @@ body {
 .art-script { font-family: 'Great Vibes', cursive; color: inherit; } /* Skrip elegan */
 
 /* Gaya khusus teks off-black */
-.off-black { color: var(--dark-grey); }
+.off-black { color: var(--off-white); }
 
 /* Judul Kotak (`h3`) */
 .card h3 { font-family: 'Playfair Display', serif; font-size: 1.5rem; color: inherit; }
@@ -175,37 +229,48 @@ body {
 /* Teks Isi Kotak (`p`) */
 .card p { font-family: 'Poppins', sans-serif; font-size: 1rem; color: inherit; }
 
-/* --- BAGIAN PROFIL CENTERPIECE (DUA KOLOM) --- */
 #main-profile-card {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 30px;
-    background-color: var(--neon-green); /* Latar belakang neon */
-    color: var(--dark-grey); /* Teks off-black */
+    background-color: transparent; 
+    color: var(--off-white); 
     padding: 0;
-    overflow: hidden; /* Pastikan foto terpotong sudut membulat */
     width: 90%;
     max-width: 1200px;
+    align-items: center; /* Membuat teks dan foto sejajar di tengah */
 }
-
 .card-left {
-    background-color: var(--off-white); 
+    background-color: transparent; /* Menghapus kotak abu-abu raksasa */
     display: flex;
     justify-content: center;
     align-items: center;
-    border-radius: 24px 0 0 24px;
-    padding: 30px; /* Tambahkan padding agar foto tidak terlalu mepet ke ujung kotak */
+    padding: 30px;
+    order: 2; /* KUNCI UTAMA: Mendorong posisi foto ke sebelah kanan */
+}
+
+.card-right {
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    order: 1; /* KUNCI UTAMA: Menarik posisi teks ke sebelah kiri */
 }
 
 /* Modifikasi untuk Galeri Profil (Crossfade) */
 .profile-gallery {
     display: grid;
     width: 100%;
-    max-width: 280px;
+    
+    /* UBAH DI SINI: Naikkan max-width dari 280px jadi 380px atau 400px */
+    max-width: 380px; 
+    
     aspect-ratio: 4 / 5; /* Rasio potrait untuk foto profil */
     border-radius: 16px;
-    box-shadow: 0 10px 20px rgba(0,0,0,0.15); /* Bayangan diaplikasikan pada container */
-    overflow: hidden; /* Mencegah gambar meluber dari radius container */
+    
+    /* Shadow dipertebal sedikit biar lebih dramatis di tema gelap */
+    box-shadow: 0 15px 35px rgba(0,0,0,0.4); 
+    overflow: hidden; 
 }
 
 .profile-gallery img {
@@ -270,6 +335,31 @@ body {
     transform: translateY(0);
 }
 
+/* Judul section masuk dari kiri lalu terasa mundur saat diarahkan kursor */
+.section-title.slide-up {
+    opacity: 0;
+    transform: translateX(-90px) translateY(35px) scale(0.72) rotate(-3deg);
+    transform-origin: center;
+    transition: opacity 0.9s ease, transform 0.9s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.35s ease;
+}
+
+.section-title.slide-up.show {
+    opacity: 1;
+    transform: translateX(0) translateY(0) scale(1) rotate(0);
+}
+
+.section-title.slide-up:hover {
+    transform: translateX(0) translateY(0) scale(1) rotate(0);
+}
+
+.section-title.wave-text {
+    display: inline-flex;
+}
+
+.section-title.wave-text span {
+    display: inline-block;
+}
+
 .delay-1 { transition-delay: 0.2s; }
 
 /* Class untuk rata tengah */
@@ -281,24 +371,177 @@ body {
 
 /* --- GAYA UNTUK GALERI BERGULIR (MARQUEE) --- */
 .marquee-track {
-    display: flex;
-    width: max-content;
-    /* Durasi 20s (detik). Kalau kememcepetan, besarin angkanya (misal: 30s) */
-    animation: scroll-kiri 20s linear infinite; 
+    position: relative;
+    width: 100%;
+    height: clamp(260px, 32vw, 360px);
+    transform-style: preserve-3d;
+    perspective: 1000px;
+    user-select: none;
+}
+
+.coverflow-shell {
+    position: relative;
+    width: min(92vw, 1000px);
+    min-height: 400px;
+    padding: 20px 0;
+    overflow: hidden;
+    isolation: isolate;
+}
+
+.coverflow-shell:focus-visible {
+    outline: 2px solid var(--neon-green);
+    outline-offset: 5px;
+}
+
+.coverflow-track {
+    cursor: grab;
+    touch-action: pan-y;
+}
+
+.coverflow-track.is-dragging,
+.coverflow-shell.is-dragging .coverflow-track {
+    cursor: grabbing;
 }
 
 /* Mengatur ukuran foto-foto di dalam galeri */
 .marquee-track img {
-    height: 250px; /* Tinggi foto disamaratakan */
-    width: auto; /* Lebar menyesuaikan rasio asli foto */
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: clamp(170px, 25vw, 290px);
+    aspect-ratio: 1;
+    height: auto;
     border-radius: 16px; /* Ujung melengkung */
-    margin-right: 20px; /* Jarak antar foto */
     object-fit: cover; /* Biar foto nggak gepeng */
+    cursor: zoom-in;
+    transform-style: preserve-3d;
+    transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.45s ease, filter 0.45s ease, box-shadow 0.45s ease;
+    -webkit-user-drag: none;
+    filter: brightness(0.62) saturate(0.8);
+    pointer-events: none;
 }
 
-/* Bonus: Animasi berhenti kalau fotonya disentuh/di-hover kursor */
-.marquee-track:hover {
-    animation-play-state: paused;
+.marquee-track img:hover {
+    filter: brightness(0.85) saturate(1);
+}
+
+.marquee-track img.is-active {
+    filter: brightness(1.08) saturate(1.1);
+    box-shadow: 0 20px 42px rgba(0, 229, 255, 0.25);
+    pointer-events: auto;
+}
+
+.coverflow-control {
+    position: absolute;
+    top: 50%;
+    z-index: 30;
+    width: 42px;
+    height: 42px;
+    border: 1px solid rgba(224, 224, 224, 0.25);
+    border-radius: 50%;
+    background: rgba(5, 5, 5, 0.78);
+    color: var(--off-white);
+    font-size: 1.35rem;
+    line-height: 1;
+    cursor: pointer;
+    transform: translateY(-50%);
+    transition: background 0.25s ease, color 0.25s ease, transform 0.25s ease;
+}
+
+.coverflow-control:hover {
+    background: var(--neon-green);
+    color: var(--dark-grey);
+    transform: translateY(-50%) scale(1.08);
+}
+
+.coverflow-caption {
+    position: absolute;
+    bottom: 42px;
+    left: 0;
+    width: 100%;
+    color: var(--off-white);
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.78rem;
+    letter-spacing: 0.08em;
+    text-align: center;
+    text-transform: uppercase;
+    pointer-events: none;
+}
+
+.coverflow-pagination {
+    position: absolute;
+    bottom: 18px;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+}
+
+.coverflow-dot {
+    width: 8px;
+    height: 8px;
+    padding: 0;
+    border: 1px solid var(--off-white);
+    border-radius: 50%;
+    background: transparent;
+    cursor: pointer;
+    opacity: 0.45;
+    transition: transform 0.25s ease, background 0.25s ease, opacity 0.25s ease;
+}
+
+.coverflow-dot:hover,
+.coverflow-dot.is-active {
+    background: var(--neon-green);
+    opacity: 1;
+    transform: scale(1.35);
+}
+
+.coverflow-prev {
+    left: 18px;
+}
+
+.coverflow-next {
+    right: 18px;
+}
+
+@media (max-width: 768px) {
+    .coverflow-shell {
+        min-height: 330px;
+        padding: 10px 0;
+    }
+
+    .marquee-track {
+        height: 270px;
+    }
+
+    .marquee-track img {
+        width: min(58vw, 230px);
+    }
+
+    .coverflow-control {
+        width: 36px;
+        height: 36px;
+        font-size: 1rem;
+    }
+
+    .coverflow-caption {
+        bottom: 36px;
+        font-size: 0.68rem;
+    }
+
+    .coverflow-prev {
+        left: 8px;
+    }
+
+    .coverflow-next {
+        right: 8px;
+    }
+}
+
+.marquee-track img.is-active:hover {
+    filter: brightness(1.12) saturate(1.15);
+    box-shadow: 0 14px 28px rgba(0, 229, 255, 0.28);
 }
 
 /* Mesin penggerak animasinya */
@@ -307,11 +550,9 @@ body {
         transform: translateX(0);
     }
     100% {
-        /* Bergeser tepat 50% (sepanjang Set 1), lalu mengulang lagi dari awal */
-        transform: translateX(-50%); 
+        transform: translateX(-50%);
     }
 }
-
 /* ==========================================
    4. INTERACTIVE PLAYGROUND (CANVAS PARTICLE)
    ========================================== */
@@ -629,6 +870,24 @@ body {
     transition: transform 0.3s ease, color 0.3s ease;
 }
 
+.contact-icon {
+    width: 28px;
+    height: 28px;
+    object-fit: contain;
+    border-radius: 6px;
+    transition: transform 0.3s ease;
+}
+
+/* KHUSUS LOGO GITHUB: Dibalik warnanya jadi putih terang */
+.github-icon {
+    filter: invert(100%) brightness(200%);
+}
+
+.contact-link:hover .contact-icon {
+    transform: scale(1.15) rotate(-5deg);
+}
+
+
 /* Garis pembatas halus untuk hak cipta di bawah */
 .footer-bottom {
     margin-top: 60px;
@@ -652,13 +911,17 @@ body {
     padding: 10px 25px;
     border-radius: 12px;
     
-    /* Background semi-transparan & efek blur (sensor) */
-    background: rgba(30, 30, 30, 0.4); 
-    backdrop-filter: blur(6px); /* Ini yang bikin partikel di belakang jadi blur */
-    -webkit-backdrop-filter: blur(6px);
-    
-    /* Garis tepi super tipis biar makin mirip kaca */
-    border: 1px solid rgba(250, 252, 235, 0.1); 
+    background: transparent;
+    border: 0;
+    text-shadow: 0 0 18px rgba(0, 136, 255, 0.4);
+}
+
+.section-title::before {
+    display: none;
+}
+
+.section-title::after {
+    display: none;
 }
 
 /* --- HAMBURGER MENU (SEMBUNYI DI LAPTOP) --- */
@@ -720,6 +983,10 @@ body {
         transition: all 0.3s ease;
     }
 
+    .nav-links::before {
+        display: none;
+    }
+
     /* Class yang dipicu oleh JavaScript saat tombol diklik */
     .nav-links.active {
         transform: translateY(0);
@@ -739,19 +1006,19 @@ body {
 
     /* 2. Memperbaiki Kotak Profil Utama (Card Left & Right) */
     #main-profile-card {
-        display: flex; /* Mengubah grid menjadi flexbox agar mudah ditumpuk */
-        flex-direction: column; /* Paksa tumpuk atas-bawah */
+    display: flex; 
+    flex-direction: column; 
     }
 
     .card-left {
-        border-radius: 24px 24px 0 0; /* Lengkungan disesuaikan hanya di atas */
-        padding: 20px;
+    padding: 20px;
+    order: 1; /* Mengembalikan foto ke urutan atas khusus untuk HP */
     }
 
     .card-right {
-        border-radius: 0 0 24px 24px; /* Lengkungan disesuaikan hanya di bawah */
-        padding: 25px 20px;
-        text-align: center; /* Teks dibuat rata tengah agar lebih manis di HP */
+    padding: 25px 20px;
+    text-align: center; 
+    order: 2; /* Menurunkan teks ke bawah foto khusus untuk HP */
     }
 
     /* Memastikan identitas diri juga rata tengah */
@@ -766,6 +1033,16 @@ body {
         padding: 8px 15px;
     }
 
+    .section-title::before {
+        left: -10px;
+        width: calc(100% + 20px);
+    }
+
+    .section-title::after {
+        right: -7px;
+        width: 34px;
+    }
+
     .text-xl {
         font-size: 1.1rem; /* Perkecil teks deskripsi profil */
     }
@@ -778,6 +1055,62 @@ body {
     
     /* 5. Menyesuaikan lebar galeri bergulir */
     #galeri .card {
-        width: 95% !important; 
+    width: 80% !important;
+    max-width: 1000px;
+    padding: 20px 0;
+    overflow-x: auto; /* Memungkinkan elemen digeser ke samping */
+    cursor: grab;
+    scrollbar-width: none; /* Sembunyikan scrollbar bawaan */
     }
+
+    #galeri .card::-webkit-scrollbar {
+    display: none;
+    }
+}
+
+/* --- GAYA MODAL POP-UP GALERI --- */
+.modal-container {
+    display: none; /* Sembunyikan secara default sebelum diklik */
+    position: fixed;
+    z-index: 2000;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(5, 5, 5, 0.9); /* Latar belakang gelap pekat semi-transparan */
+    backdrop-filter: blur(8px); /* Efek blur ala kaca sensor */
+    -webkit-backdrop-filter: blur(8px);
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    max-width: 85%;
+    max-height: 80vh;
+    border-radius: 16px;
+    object-fit: contain;
+    box-shadow: 0 0 40px rgba(0, 229, 255, 0.4); /* Efek cahaya neon biru menyala */
+    animation: zoomIn 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.modal-close {
+    position: absolute;
+    top: 25px;
+    right: 35px;
+    color: var(--off-white);
+    font-size: 45px;
+    font-weight: bold;
+    cursor: pointer;
+    z-index: 1;
+    padding: 8px 14px;
+    transition: color 0.3s;
+}
+
+.modal-close:hover {
+    color: var(--neon-green);
+}
+
+@keyframes zoomIn {
+    from { transform: scale(0.7); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
 }

@@ -21,24 +21,24 @@
             <span class="bar"></span>
         </div>
         
-        <ul class="nav-links slide-down delay-1">
-            <li><a href="#profil" class="wave-text">
+        <ul class="nav-links slide-down delay-1" role="tablist" aria-label="Navigasi portfolio">
+            <li><a href="#profil" class="wave-text" role="tab" aria-selected="true">
                 <span style="--i:1">P</span><span style="--i:2">r</span><span style="--i:3">o</span><span style="--i:4">f</span><span style="--i:5">i</span><span style="--i:6">l</span>
             </a></li>
             
-            <li><a href="#pengalaman" class="wave-text">
+            <li><a href="#pengalaman" class="wave-text" role="tab" aria-selected="false">
                 <span style="--i:1">P</span><span style="--i:2">e</span><span style="--i:3">n</span><span style="--i:4">g</span><span style="--i:5">a</span><span style="--i:6">l</span><span style="--i:7">a</span><span style="--i:8">m</span><span style="--i:9">a</span><span style="--i:10">n</span>
             </a></li>
             
-            <li><a href="#proyek" class="wave-text">
+            <li><a href="#proyek" class="wave-text" role="tab" aria-selected="false">
                 <span style="--i:1">P</span><span style="--i:2">r</span><span style="--i:3">o</span><span style="--i:4">y</span><span style="--i:5">e</span><span style="--i:6">k</span>
             </a></li>
             
-            <li><a href="#pendidikan" class="wave-text">
+            <li><a href="#pendidikan" class="wave-text" role="tab" aria-selected="false">
                 <span style="--i:1">P</span><span style="--i:2">e</span><span style="--i:3">n</span><span style="--i:4">d</span><span style="--i:5">i</span><span style="--i:6">d</span><span style="--i:7">i</span><span style="--i:8">k</span><span style="--i:9">a</span><span style="--i:10">n</span>
             </a></li>
             
-            <li><a href="#galeri" class="wave-text">
+            <li><a href="#galeri" class="wave-text" role="tab" aria-selected="false">
                 <span style="--i:1">G</span><span style="--i:2">a</span><span style="--i:3">l</span><span style="--i:4">e</span><span style="--i:5">r</span><span style="--i:6">i</span>
             </a></li>
         </ul>
@@ -106,6 +106,25 @@
         </div>
     </section>
 
+    
+
+    <section id="galeri" class="section">
+        <h2 class="section-title oversized-red-serif slide-up">Galeri Uzi</h2>
+        
+        <div class="card inset-card dark-card slide-up coverflow-shell" tabindex="0" role="region" aria-roledescription="carousel" aria-label="Galeri foto Uzi">
+            <button class="coverflow-control coverflow-prev" type="button" aria-label="Foto sebelumnya">&#10094;</button>
+            <div class="marquee-track coverflow-track">
+                <img src="images/foto 1.jpeg" alt="Galeri 1" data-title="Momen Uzi 01">
+                <img src="images/foto 2.jpeg" alt="Galeri 2" data-title="Momen Uzi 02">
+                <img src="images/foto 3.jpeg" alt="Galeri 3" data-title="Momen Uzi 03">
+                <img src="images/foto 4.jpeg" alt="Galeri 4" data-title="Momen Uzi 04">
+            </div>
+            <button class="coverflow-control coverflow-next" type="button" aria-label="Foto berikutnya">&#10095;</button>
+            <div class="coverflow-caption" aria-live="polite"></div>
+            <div class="coverflow-pagination" role="tablist" aria-label="Pilih foto galeri"></div>
+        </div>
+    </section>
+
     <section id="pendidikan" class="section">
         <h2 class="section-title oversized-red-serif slide-up">Riwayat Pendidikan</h2>
         
@@ -139,29 +158,6 @@
         </div>
     </section>
 
-    <section id="galeri" class="section">
-        <h2 class="section-title oversized-red-serif slide-up">Galeri Uzi</h2>
-        
-        <div class="card inset-card dark-card slide-up" style="width: 80%; max-width: 1000px; padding: 20px 0; overflow: hidden;">
-            <div class="marquee-track">
-                <img src="images/foto 1.jpeg" alt="Galeri 1">
-                <img src="images/foto 2.jpeg" alt="Galeri 2">
-                <img src="images/foto 3.jpeg" alt="Galeri 3">
-                <img src="images/foto 4.jpeg" alt="Galeri 4">
-                
-                <img src="images/foto 1.jpeg" alt="Galeri 1">
-                <img src="images/foto 2.jpeg" alt="Galeri 2">
-                <img src="images/foto 3.jpeg" alt="Galeri 3">
-                <img src="images/foto 4.jpeg" alt="Galeri 4">
-                
-                <img src="images/foto 1.jpeg" alt="Galeri 1">
-                <img src="images/foto 2.jpeg" alt="Galeri 2">
-                <img src="images/foto 3.jpeg" alt="Galeri 3">
-                <img src="images/foto 4.jpeg" alt="Galeri 4">
-            </div>
-        </div>
-    </section>
-
     <section id="kontak" class="section">
         <h2 class="section-title oversized-red-serif slide-up">Hubungi Saya</h2>
         
@@ -179,17 +175,21 @@
                 <ul class="contact-list">
                     <li>
                        <a href="https://www.instagram.com/ziifauzy_?igsh=MWpzdmd3Z3Rla3Q1aA==" target="_blank" class="contact-link">
-                         📸 <span class="link-text">Instagram: @ziifauzy_</span>
+                         <img src="images/Instagram.png" alt="Instagram" class="contact-icon">
+                         <span class="link-text">Instagram: @ziifauzy_</span>
                       </a>
                     </li>
                     <li>
+                        <!-- TAMBAHKAN KELAS github-icon DI SINI -->
                         <a href="https://github.com/uzifauzi009" target="_blank" class="contact-link">
-                            🐙 <span class="link-text">GitHub: @uzifauzi009</span>
+                            <img src="images/GitHub.png" alt="GitHub" class="contact-icon github-icon">
+                            <span class="link-text">GitHub: @uzifauzi009</span>
                         </a>
                     </li>
                     <li>
                         <a href="https://www.linkedin.com/in/fauzi-awaludin-kamal-705267391" target="_blank" class="contact-link">
-                            💼 <span class="link-text">LinkedIn: Fauzi Awaludin Kamal</span>
+                            <img src="images/Linkedin1.png" alt="LinkedIn" class="contact-icon">
+                            <span class="link-text">LinkedIn: Fauzi Awaludin Kamal</span>
                         </a>
                     </li>
                 </ul>
@@ -202,6 +202,8 @@
         </div>
     </section>
 
+    
+
     <script type="module">
         import { createTimeline, stagger, splitText } from 'https://cdn.jsdelivr.net/npm/animejs/+esm';
 
@@ -211,19 +213,30 @@
         });
 
         createTimeline({
-            loop: true,
-            defaults: { ease: 'inOut(3)', duration: 650 }
+            // Kalau mau animasinya jalan SEKALI aja dan berhenti, ganti true jadi false
+            loop: true, 
+            
+            // 1. Durasi diperlambat dari 650 jadi 1200 biar geraknya lebih halus
+            defaults: { ease: 'inOut(3)', duration: 1200 } 
         })
         .add(words, {
             y: [$el => +$el.dataset.line % 2 ? '100%' : '-100%', '0%'],
-        }, stagger(125))
+        // 2. Kecepatan kemunculan antar kata diperlambat dari 125 jadi 250
+        }, stagger(250)) 
         .add(chars, {
             y: $el => +$el.dataset.line % 2 ? '100%' : '-100%',
-        }, stagger(10, { from: 'random' }))
+            // 3. KUNCI UTAMA: Ditambah delay 4000 (4 detik) agar teks diam dulu dan bisa dibaca sebelum hilang!
+            delay: 4000 
+        }, stagger(15, { from: 'random' }))
         .init();
     </script>
 
     <script src="script.js"></script>
     <script src="bg-particles.js" ></script>
+
+    <div id="gallery-modal" class="modal-container">
+        <span class="modal-close">&times;</span>
+        <img class="modal-content" id="modal-img" alt="Zoomed Galeri">
+    </div>
 </body>
 </html>

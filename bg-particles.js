@@ -13,12 +13,12 @@ class TextParticle {
         this.el.className = "bg-text-particle";
         this.el.textContent = text;
         
-        // Pilihan warna: 65% cream (#FAFCEB), 35% merah neon (#FF0000)
-        this.isRed = Math.random() > 0.65;
-        if (this.isRed) {
-            this.el.classList.add("red-glow");
+        // Pilihan warna biru
+        this.isNeon = Math.random() > 0.65;
+        if (this.isNeon) {
+            this.el.classList.add("blue-glow");
         }
-        
+
         // Skala acak untuk efek kedalaman 3D (parallax)
         this.scale = 0.7 + Math.random() * 1.8;
         
@@ -91,8 +91,8 @@ class TextParticle {
                 this.targetOffsetY = Math.sin(pushAngle) * force * 65;
                 
                 // Berikan efek highlight bersinar saat kursor di dekatnya
-                this.el.style.color = this.isRed ? "rgba(255, 0, 0, 0.28)" : "rgba(250, 252, 235, 0.28)";
-                this.el.style.textShadow = this.isRed ? "0 0 16px rgba(255, 0, 0, 0.18)" : "0 0 16px rgba(250, 252, 235, 0.18)";
+                this.el.style.color = this.isNeon ? "rgba(0, 229, 255, 0.6)" : "rgba(0, 136, 255, 0.6)";
+                this.el.style.textShadow = this.isNeon ? "0 0 25px rgba(0, 229, 255, 0.5)" : "0 0 25px rgba(0, 136, 255, 0.5)";
             } else {
                 this.targetOffsetX = 0;
                 this.targetOffsetY = 0;
@@ -245,7 +245,7 @@ document.addEventListener("DOMContentLoaded", () => {
             return; 
         }
 
-        const colorClass = Math.random() > 0.45 ? "" : "red";
+        const colorClass = Math.random() > 0.45 ? "" : "blue-glow";
         
         // Lahirkan letupan 12 teks sparks mini
         for (let i = 0; i < 12; i++) {
