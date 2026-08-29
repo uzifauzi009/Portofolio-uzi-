@@ -1,6 +1,39 @@
 // ==========================================
 // 1. LOGIKA ANIMASI SCROLL (Slide-Up Bento Box)
 // ==========================================
+const loadingScreen = document.getElementById('loading-screen');
+const loadingBarFill = document.querySelector('.loading-bar-fill');
+const loadingPercent = document.querySelector('.loading-percent');
+
+if (loadingScreen && loadingBarFill && loadingPercent) {
+    const startLoading = () => {
+        const startTime = Date.now();
+        const duration = 3000;
+        const tick = () => {
+            const elapsed = Date.now() - startTime;
+            const progress = Math.min((elapsed / duration) * 100, 100);
+            const safeProgress = Math.round(progress);
+
+            loadingBarFill.style.width = `${safeProgress}%`;
+            loadingPercent.textContent = `${safeProgress}%`;
+
+            if (safeProgress >= 100) {
+                setTimeout(() => {
+                    loadingScreen.classList.add('is-hidden');
+                    setTimeout(() => loadingScreen.remove(), 700);
+                }, 250);
+                return;
+            }
+
+            requestAnimationFrame(tick);
+        };
+
+        requestAnimationFrame(tick);
+    };
+
+    startLoading();
+}
+
 const slideElements = document.querySelectorAll('.slide-up');
 
 const observerOptions = {
@@ -102,9 +135,9 @@ const coverflowImages = sliderTrack ? [...sliderTrack.querySelectorAll('img')] :
 if (sliderContainer && sliderTrack && coverflowImages.length) {
     let currentIndex = 0;
     let dragStartX = 0;
-    let dragDistance = 0;
+    let dragDeltaX = 0;
     let isDragging = false;
-    let autoplayTimer;
+    let dragWasUsed = false;
     const caption = sliderContainer.querySelector('.coverflow-caption');
     const pagination = sliderContainer.querySelector('.coverflow-pagination');
 
@@ -135,6 +168,7 @@ if (sliderContainer && sliderTrack && coverflowImages.length) {
             const depth = -distance * 55;
             const visible = distance <= 2;
 
+            image.style.transition = 'transform 0.42s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.32s ease, filter 0.32s ease, box-shadow 0.32s ease';
             image.style.transform = `translate(-50%, -50%) translateX(${offset * 48}%) translateZ(${depth}px) rotateY(${tilt}deg) scale(${scale})`;
             image.style.opacity = visible ? opacity : '0';
             image.style.zIndex = String(20 - distance);
@@ -143,58 +177,27 @@ if (sliderContainer && sliderTrack && coverflowImages.length) {
         updateDetails();
     };
 
-    const moveCoverflow = (direction) => {
-        currentIndex = (currentIndex + direction + coverflowImages.length) % coverflowImages.length;
+    const prevSlide = () => {
+        currentIndex = (currentIndex - 1 + coverflowImages.length) % coverflowImages.length;
         renderCoverflow();
     };
 
-    const restartAutoplay = () => {
-        clearInterval(autoplayTimer);
-        autoplayTimer = setInterval(() => moveCoverflow(1), 4200);
+    const nextSlide = () => {
+        currentIndex = (currentIndex + 1) % coverflowImages.length;
+        renderCoverflow();
     };
 
-    sliderContainer.addEventListener('pointerdown', (event) => {
-        if (event.target.closest('.coverflow-control')) return;
-
-        isDragging = true;
-        dragStartX = event.clientX;
-        dragDistance = 0;
-        sliderContainer.setPointerCapture(event.pointerId);
-        sliderContainer.classList.add('is-dragging');
-        clearInterval(autoplayTimer);
-    });
-
-    sliderContainer.addEventListener('pointermove', (event) => {
-        if (!isDragging) return;
-        dragDistance = event.clientX - dragStartX;
-        if (Math.abs(dragDistance) > 8) event.preventDefault();
-    });
-
-    const endDrag = () => {
-        if (!isDragging) return;
-        isDragging = false;
-        sliderContainer.classList.remove('is-dragging');
-        if (Math.abs(dragDistance) > 45) moveCoverflow(dragDistance < 0 ? 1 : -1);
-        restartAutoplay();
+    const selectCoverflowImage = (index) => {
+        if (index < 0 || index >= coverflowImages.length) return;
+        currentIndex = index;
+        renderCoverflow();
     };
 
-    sliderContainer.addEventListener('pointerup', endDrag);
-    sliderContainer.addEventListener('pointercancel', endDrag);
     const previousButton = sliderContainer.querySelector('.coverflow-prev');
     const nextButton = sliderContainer.querySelector('.coverflow-next');
 
-    [previousButton, nextButton].forEach((button) => {
-        button.addEventListener('pointerdown', (event) => event.stopPropagation());
-    });
-
-    previousButton.addEventListener('click', () => {
-        moveCoverflow(-1);
-        restartAutoplay();
-    });
-    nextButton.addEventListener('click', () => {
-        moveCoverflow(1);
-        restartAutoplay();
-    });
+    previousButton.addEventListener('click', prevSlide);
+    nextButton.addEventListener('click', nextSlide);
 
     if (pagination) {
         coverflowImages.forEach((image, index) => {
@@ -204,31 +207,83 @@ if (sliderContainer && sliderTrack && coverflowImages.length) {
             dot.setAttribute('role', 'tab');
             dot.setAttribute('aria-label', `Pilih ${image.alt}`);
             dot.addEventListener('click', () => {
-                currentIndex = index;
-                renderCoverflow();
-                restartAutoplay();
+                selectCoverflowImage(index);
             });
             pagination.appendChild(dot);
         });
     }
 
-    sliderContainer.addEventListener('keydown', (event) => {
-        if (event.key === 'ArrowLeft') {
-            event.preventDefault();
-            moveCoverflow(-1);
-            restartAutoplay();
-        } else if (event.key === 'ArrowRight') {
-            event.preventDefault();
-            moveCoverflow(1);
-            restartAutoplay();
+    const beginDrag = (event) => {
+        if (event.target.closest && event.target.closest('.coverflow-control')) return;
+        dragStartX = event.clientX;
+        dragDeltaX = 0;
+        isDragging = true;
+        dragWasUsed = false;
+    };
+
+    const moveDrag = (event) => {
+        if (!isDragging) return;
+        dragDeltaX = event.clientX - dragStartX;
+        if (Math.abs(dragDeltaX) > 12) {
+            dragWasUsed = true;
+        }
+    };
+
+    const endDrag = (event) => {
+        if (!isDragging) return;
+        isDragging = false;
+
+        const delta = dragDeltaX;
+        if (Math.abs(delta) > 50) {
+            if (delta < 0) nextSlide();
+            else prevSlide();
+            dragDeltaX = 0;
+            dragWasUsed = false;
+            return;
+        }
+
+        dragDeltaX = 0;
+        dragWasUsed = false;
+    };
+
+    sliderContainer.addEventListener('mousedown', beginDrag);
+    sliderContainer.addEventListener('mousemove', moveDrag);
+    sliderContainer.addEventListener('mouseup', endDrag);
+    sliderContainer.addEventListener('mouseleave', () => {
+        if (isDragging) {
+            isDragging = false;
+            dragDeltaX = 0;
+            dragWasUsed = false;
         }
     });
 
+    sliderContainer.addEventListener('touchstart', (event) => {
+        if (!event.touches || !event.touches[0]) return;
+        beginDrag(event.touches[0]);
+    }, { passive: true });
+
+    sliderContainer.addEventListener('touchmove', (event) => {
+        if (!event.touches || !event.touches[0]) return;
+        moveDrag(event.touches[0]);
+    }, { passive: true });
+
+    sliderContainer.addEventListener('touchend', (event) => {
+        if (!event.changedTouches || !event.changedTouches[0]) return;
+        endDrag(event.changedTouches[0]);
+    }, { passive: true });
+
     coverflowImages.forEach((image, index) => {
-        image.addEventListener('click', () => {
-            if (Math.abs(dragDistance) > 8) return;
-            currentIndex = index;
-            renderCoverflow();
+        image.addEventListener('click', (event) => {
+            if (dragWasUsed) {
+                dragWasUsed = false;
+                event.stopPropagation();
+                return;
+            }
+
+            selectCoverflowImage(index);
+        });
+
+        image.addEventListener('dblclick', () => {
             const modal = document.getElementById('gallery-modal');
             const modalImage = document.getElementById('modal-img');
             if (!modal || !modalImage) return;
@@ -238,8 +293,17 @@ if (sliderContainer && sliderTrack && coverflowImages.length) {
         });
     });
 
+    sliderContainer.addEventListener('keydown', (event) => {
+        if (event.key === 'ArrowLeft') {
+            event.preventDefault();
+            prevSlide();
+        } else if (event.key === 'ArrowRight') {
+            event.preventDefault();
+            nextSlide();
+        }
+    });
+
     renderCoverflow();
-    restartAutoplay();
     window.addEventListener('beforeunload', () => clearInterval(autoplayTimer));
 }
 

@@ -19,13 +19,17 @@ class TextParticle {
             this.el.classList.add("blue-glow");
         }
 
-        // Skala acak untuk efek kedalaman 3D (parallax)
-        this.scale = 0.7 + Math.random() * 1.8;
+        // Skala acak untuk efek kedalaman 3D yang lebih cinematic
+        this.scale = 0.8 + Math.random() * 1.2;
         
-        // Atur opasitas bawaan berdasarkan ukuran (tulisan besar = lebih dekat & sedikit lebih jelas)
-        this.baseAlpha = 0.4 + (this.scale / 2.5) * 0.3;
+        // Opasitas lebih lembut agar background terasa atmosferis, bukan ramai
+        this.baseAlpha = 0.12 + (this.scale / 2.8) * 0.14;
         this.alpha = this.baseAlpha;
         this.el.style.opacity = this.alpha;
+
+        // Variabel untuk efek berkedip halus di background
+        this.pulseOffset = Math.random() * Math.PI * 2;
+        this.pulseSpeed = 0.4 + Math.random() * 0.8;
         
         // Atur posisi awal acak di layar
         this.width = window.innerWidth;
@@ -33,15 +37,15 @@ class TextParticle {
         this.x = Math.random() * this.width;
         this.y = Math.random() * this.height;
         
-        // Kecepatan melayang bebas yang sangat lambat & tenang
-        const speedMultiplier = 0.06 + Math.random() * 0.12;
+        // Kecepatan melayang lebih lembut dan lebih elegan
+        const speedMultiplier = 0.02 + Math.random() * 0.045;
         const angleDir = Math.random() * Math.PI * 2;
         this.vx = Math.cos(angleDir) * speedMultiplier;
         this.vy = Math.sin(angleDir) * speedMultiplier;
         
-        // Rotasi awal & kecepatan putaran lambat
-        this.angle = (Math.random() - 0.5) * 25;
-        this.vAngle = (Math.random() - 0.5) * 0.04;
+        // Rotasi awal & kecepatan putaran lebih halus
+        this.angle = (Math.random() - 0.5) * 18;
+        this.vAngle = (Math.random() - 0.5) * 0.02;
         
         // Offset interaktif saat didorong kursor mouse
         this.offsetX = 0;
@@ -54,9 +58,9 @@ class TextParticle {
     }
 
     update(width, height, mouse) {
-        // 1. Jalankan perpindahan melayang dasar
-        this.x += this.vx;
-        this.y += this.vy;
+        // 1. Jalankan perpindahan melayang dasar dengan drift halus
+        this.x += this.vx + Math.sin(this.y * 0.02 + this.pulseOffset) * 0.03;
+        this.y += this.vy + Math.cos(this.x * 0.018 + this.pulseOffset) * 0.02;
         this.angle += this.vAngle;
 
         // 2. Wrap-around layar jika keluar batas (ditambah margin ukuran font)
@@ -81,18 +85,16 @@ class TextParticle {
             const dx = centerX - mouse.x;
             const dy = centerY - mouse.y;
             const dist = Math.sqrt(dx * dx + dy * dy);
-            const repulsionDist = 180; // Jangkauan dorongan kursor
+            const repulsionDist = 240;
 
             if (dist < repulsionDist) {
                 const pushAngle = Math.atan2(dy, dx);
-                // Dorong partikel teks semakin jauh saat kursor mendekat
                 const force = (repulsionDist - dist) / repulsionDist;
-                this.targetOffsetX = Math.cos(pushAngle) * force * 65;
-                this.targetOffsetY = Math.sin(pushAngle) * force * 65;
+                this.targetOffsetX = Math.cos(pushAngle) * force * 28;
+                this.targetOffsetY = Math.sin(pushAngle) * force * 28;
                 
-                // Berikan efek highlight bersinar saat kursor di dekatnya
-                this.el.style.color = this.isNeon ? "rgba(0, 229, 255, 0.6)" : "rgba(0, 136, 255, 0.6)";
-                this.el.style.textShadow = this.isNeon ? "0 0 25px rgba(0, 229, 255, 0.5)" : "0 0 25px rgba(0, 136, 255, 0.5)";
+                this.el.style.color = this.isNeon ? "rgba(0, 229, 255, 0.46)" : "rgba(0, 136, 255, 0.38)";
+                this.el.style.textShadow = this.isNeon ? "0 0 16px rgba(0, 229, 255, 0.25)" : "0 0 16px rgba(0, 136, 255, 0.2)";
             } else {
                 this.targetOffsetX = 0;
                 this.targetOffsetY = 0;
@@ -112,8 +114,11 @@ class TextParticle {
     }
 
     draw() {
-        // Terapkan translasi 3D terakselerasi GPU untuk performa rendering super mulus 60 FPS
-        this.el.style.transform = `translate3d(${this.x + this.offsetX}px, ${this.y + this.offsetY}px, 0) rotate(${this.angle}deg) scale(${this.scale})`;
+        const pulse = 1 + Math.sin((performance.now() * 0.001 * this.pulseSpeed) + this.pulseOffset) * 0.12;
+        const glowAlpha = Math.min(0.5, this.baseAlpha + 0.12);
+
+        this.el.style.opacity = String(Math.min(glowAlpha, this.alpha * pulse));
+        this.el.style.transform = `translate3d(${this.x + this.offsetX}px, ${this.y + this.offsetY}px, 0) rotate(${this.angle}deg) scale(${this.scale * pulse})`;
     }
 
     remove() {
@@ -225,7 +230,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Pembuatan Partikel Teks
     const particles = [];
-    const maxParticles = width < 768 ? 16 : 38; // Kerapatan partikel teks terapung ideal
+    const maxParticles = width < 768 ? 8 : width < 1200 ? 14 : 22;
 
     for (let i = 0; i < maxParticles; i++) {
         const text = TEXT_POOL[Math.floor(Math.random() * TEXT_POOL.length)];
@@ -247,8 +252,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const colorClass = Math.random() > 0.45 ? "" : "blue-glow";
         
-        // Lahirkan letupan 12 teks sparks mini
-        for (let i = 0; i < 12; i++) {
+        // Spark minimal agar klik terasa premium, bukan mengganggu
+        for (let i = 0; i < 5; i++) {
             const sparkText = SPARK_TEXTS[Math.floor(Math.random() * SPARK_TEXTS.length)];
             sparks.push(new Spark(container, e.clientX, e.clientY, sparkText, colorClass));
         }
