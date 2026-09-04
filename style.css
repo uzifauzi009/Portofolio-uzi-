@@ -1400,3 +1400,16 @@ body::before {
     from { transform: scale(0.7); opacity: 0; }
     to { transform: scale(1); opacity: 1; }
 }
+
+@media (max-width: 768px) {
+    .section-title.wave-text {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        width: min(100%, 560px);
+        padding-left: 14px;
+        padding-right: 14px;
+        line-height: 1.15;
+        text-align: center;
+    }
+}
