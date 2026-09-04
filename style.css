@@ -15,16 +15,18 @@
 html {
     scroll-behavior: smooth;
     font-family: 'Poppins', sans-serif; /* Default sans-serif modern */
-    background-color: transparent !important; /* Dibuat transparan agar kanvas partikel terlihat */
+    background-color: var(--dark-grey) !important;
     color: var(--off-white); /* Teks default off-white */
-    overflow-x: hidden;
+    overflow-x: clip;
 }
 
-body { 
+body {
     margin: 0; 
     padding: 0; 
-    background-color: transparent !important; /* Dibuat transparan agar kanvas partikel terlihat */
-    overflow-x: hidden;
+    width: 100%;
+    min-width: 0;
+    background-color: var(--dark-grey) !important;
+    overflow-x: clip;
 }
 
 body::before {
@@ -44,8 +46,8 @@ body::before {
     position: fixed;
     top: 0;
     left: 0;
-    width: 100%;
-    max-width: 100vw;
+    width: 100vw;
+    max-width: 100%;
     height: 100vh;
     z-index: -1;
     pointer-events: none;
@@ -94,7 +96,9 @@ body::before {
 .navbar {
     position: fixed;
     top: 0;
-    width: 100%;
+    left: 0;
+    width: 100vw;
+    max-width: 100%;
     background: rgba(5, 5, 5, 0.82);
     backdrop-filter: blur(14px);
     -webkit-backdrop-filter: blur(14px);
@@ -191,7 +195,7 @@ body::before {
 /* --- GAYA BENTO GRID --- */
 .bento-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
     gap: 20px;
     width: 80%;
     max-width: 1000px;
@@ -199,6 +203,7 @@ body::before {
 
 /* --- GAYA KARTU INSET (DARI QUIVEX) --- */
 .card {
+    min-width: 0;
     padding: 30px;
     border-radius: 24px;
     position: relative;
@@ -989,6 +994,8 @@ body::before {
     position: relative;
     z-index: 10;
     display: inline-block;
+    max-width: 100%;
+    overflow-wrap: anywhere;
     padding: 10px 25px;
     border-radius: 12px;
     background: linear-gradient(180deg, rgba(17, 17, 17, 0.7), rgba(7, 7, 7, 0.9));
