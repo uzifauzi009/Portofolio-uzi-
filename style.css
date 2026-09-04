@@ -8,17 +8,23 @@
 }
 
 /* Pengaturan Dasar & Smooth Scroll */
+* {
+    box-sizing: border-box;
+}
+
 html {
     scroll-behavior: smooth;
     font-family: 'Poppins', sans-serif; /* Default sans-serif modern */
     background-color: transparent !important; /* Dibuat transparan agar kanvas partikel terlihat */
     color: var(--off-white); /* Teks default off-white */
+    overflow-x: hidden;
 }
 
 body { 
     margin: 0; 
     padding: 0; 
     background-color: transparent !important; /* Dibuat transparan agar kanvas partikel terlihat */
+    overflow-x: hidden;
 }
 
 body::before {
@@ -38,7 +44,8 @@ body::before {
     position: fixed;
     top: 0;
     left: 0;
-    width: 100vw;
+    width: 100%;
+    max-width: 100vw;
     height: 100vh;
     z-index: -1;
     pointer-events: none;
@@ -1179,6 +1186,8 @@ body::before {
 @media (max-width: 768px) {
     .section {
         padding-top: 80px;
+        padding-left: 12px;
+        padding-right: 12px;
     }
 
     .navbar {
@@ -1239,7 +1248,7 @@ body::before {
     #main-profile-card {
         grid-template-columns: 1fr;
         gap: 0;
-        width: min(92vw, 560px);
+        width: min(100%, 560px);
     }
 
     .card-left,
@@ -1248,7 +1257,8 @@ body::before {
     }
 
     .profile-gallery {
-        max-width: 280px;
+        max-width: 100%;
+        width: 100%;
     }
 
     .hero-actions {
@@ -1262,7 +1272,7 @@ body::before {
     }
 
     .bento-grid {
-        width: min(90vw, 560px);
+        width: min(100%, 560px);
         grid-template-columns: 1fr;
     }
 
@@ -1282,6 +1292,59 @@ body::before {
     .loading-text {
         letter-spacing: 0.12em;
         font-size: 0.68rem;
+    }
+}
+
+@media (max-width: 430px) {
+    html,
+    body {
+        overflow-x: hidden;
+    }
+
+    .navbar {
+        padding: 10px 14px;
+    }
+
+    .navbar .logo {
+        font-size: 1.8rem;
+    }
+
+    .section {
+        padding-top: 78px;
+        padding-left: 8px;
+        padding-right: 8px;
+    }
+
+    #main-profile-card {
+        width: 100%;
+        border-radius: 22px;
+    }
+
+    .card-left,
+    .card-right {
+        padding: 16px 14px;
+    }
+
+    .card-right .logo {
+        font-size: 2.2rem;
+    }
+
+    #text-split.text-xl {
+        font-size: 1rem;
+        line-height: 1.5;
+    }
+
+    .oversized-red-serif {
+        font-size: 1.8rem;
+    }
+
+    .bento-grid {
+        width: 100%;
+    }
+
+    .coverflow-shell {
+        width: 100%;
+        min-height: 300px;
     }
 }
 
