@@ -73,7 +73,10 @@ const mobileMenu = document.getElementById('mobile-menu');
 const navLinks = document.querySelector('.nav-links');
 
 mobileMenu.addEventListener('click', () => {
-    navLinks.classList.toggle('active');
+    const isOpen = navLinks.classList.toggle('active');
+    mobileMenu.classList.toggle('active', isOpen);
+    mobileMenu.setAttribute('aria-expanded', String(isOpen));
+    mobileMenu.setAttribute('aria-label', isOpen ? 'Tutup navigasi portfolio' : 'Buka navigasi portfolio');
 });
 
 // Tutup menu otomatis kalau salah satu menunya diklik
@@ -81,6 +84,9 @@ const navItems = document.querySelectorAll('.nav-links a');
 navItems.forEach(item => {
     item.addEventListener('click', () => {
         navLinks.classList.remove('active');
+        mobileMenu.classList.remove('active');
+        mobileMenu.setAttribute('aria-expanded', 'false');
+        mobileMenu.setAttribute('aria-label', 'Buka navigasi portfolio');
     });
 });
 

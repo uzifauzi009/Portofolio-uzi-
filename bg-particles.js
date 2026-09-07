@@ -36,9 +36,14 @@ class TextParticle {
         this.height = window.innerHeight;
         this.x = Math.random() * this.width;
         this.y = Math.random() * this.height;
+        this.waveBaseY = this.y;
+        this.wavePhase = Math.random() * Math.PI * 2;
+        this.waveAmplitude = 18 + Math.random() * 34;
+        this.waveLength = 0.004 + Math.random() * 0.003;
+        this.waveSpeed = 0.45 + Math.random() * 0.35;
         
         // Kecepatan melayang lebih lembut dan lebih elegan
-        const speedMultiplier = 0.02 + Math.random() * 0.045;
+        const speedMultiplier = 0.08 + Math.random() * 0.12;
         const angleDir = Math.random() * Math.PI * 2;
         this.vx = Math.cos(angleDir) * speedMultiplier;
         this.vy = Math.sin(angleDir) * speedMultiplier;
@@ -58,9 +63,12 @@ class TextParticle {
     }
 
     update(width, height, mouse) {
-        // 1. Jalankan perpindahan melayang dasar dengan drift halus
-        this.x += this.vx + Math.sin(this.y * 0.02 + this.pulseOffset) * 0.03;
-        this.y += this.vy + Math.cos(this.x * 0.018 + this.pulseOffset) * 0.02;
+        // 1. Gerakkan partikel menyusuri gelombang dengan fase yang berbeda
+        const time = performance.now() * 0.001;
+        this.x += this.vx;
+        this.y = this.waveBaseY + Math.sin(
+            this.x * this.waveLength + time * this.waveSpeed + this.wavePhase
+        ) * this.waveAmplitude;
         this.angle += this.vAngle;
 
         // 2. Wrap-around layar jika keluar batas (ditambah margin ukuran font)
@@ -107,6 +115,8 @@ class TextParticle {
             this.el.style.color = "";
             this.el.style.textShadow = "";
         }
+
+        this.waveBaseY = Math.max(-fontBound, Math.min(height + fontBound, this.waveBaseY));
 
         // Interpolasi perpindahan dorongan kursor secara smooth
         this.offsetX += (this.targetOffsetX - this.offsetX) * 0.08;
@@ -177,16 +187,105 @@ class Spark {
     }
 }
 
+class DataStreamField {
+    constructor(parent, width, height) {
+        this.canvas = document.createElement("canvas");
+        this.canvas.id = "particle-field";
+        this.context = this.canvas.getContext("2d");
+        this.parent = parent;
+        this.streams = [];
+        this.resize(width, height);
+        parent.appendChild(this.canvas);
+
+        const streamCount = Math.ceil(width / 34);
+        const characters = "01ABCDEF0123456789";
+        for (let i = 0; i < streamCount; i++) {
+            const cellSize = 11 + Math.random() * 4;
+            const length = 8 + Math.floor(Math.random() * 18);
+            this.streams.push({
+                x: i * 34 + Math.random() * 18,
+                y: Math.random() * height,
+                speed: 35 + Math.random() * 75,
+                cellSize,
+                length,
+                brightness: 0.12 + Math.random() * 0.22,
+                phase: Math.random() * Math.PI * 2,
+                characters: Array.from({ length }, () => characters[Math.floor(Math.random() * characters.length)])
+            });
+        }
+    }
+
+    resize(width, height) {
+        const pixelRatio = Math.min(window.devicePixelRatio || 1, 2);
+        this.canvas.width = width * pixelRatio;
+        this.canvas.height = height * pixelRatio;
+        this.canvas.style.width = `${width}px`;
+        this.canvas.style.height = `${height}px`;
+        this.context.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
+    }
+
+    update(width, height, mouse) {
+        const time = performance.now() * 0.001;
+        const context = this.context;
+        context.clearRect(0, 0, width, height);
+        context.font = "600 12px monospace";
+        context.textAlign = "center";
+        context.textBaseline = "top";
+
+        context.fillStyle = "rgba(0, 229, 255, 0.018)";
+        context.fillRect(0, 0, width, height);
+
+        this.streams.forEach(stream => {
+            stream.y += stream.speed * 0.016;
+            if (stream.y - stream.length * stream.cellSize > height + 40) {
+                stream.y = -Math.random() * height * 0.8 - 40;
+                stream.speed = 35 + Math.random() * 75;
+            }
+
+            const mouseDistance = mouse.active ? Math.abs(stream.x - mouse.x) : Infinity;
+            const focus = Math.max(0, 1 - mouseDistance / 180);
+            const shimmer = 0.85 + Math.sin(time * 3 + stream.phase) * 0.15;
+
+            for (let index = 0; index < stream.length; index++) {
+                const y = stream.y - index * stream.cellSize;
+                if (y < -20 || y > height + 20) continue;
+
+                const fade = 1 - index / stream.length;
+                const alpha = Math.min(0.95, (stream.brightness + focus * 0.35) * fade * shimmer);
+                const character = stream.characters[index];
+                const isLead = index === 0;
+                const isDither = (index + Math.floor(time * 2) + Math.floor(stream.phase * 3)) % 5 === 0;
+                const color = isLead ? `rgba(224, 252, 255, ${Math.min(1, alpha + 0.3)})` : `rgba(0, 229, 255, ${alpha})`;
+
+                context.shadowBlur = isLead || focus > 0.25 ? 12 : 5;
+                context.shadowColor = "rgba(0, 229, 255, 0.8)";
+                context.fillStyle = color;
+                context.fillText(character, stream.x, y);
+
+                if (isDither) {
+                    context.shadowBlur = 0;
+                    context.fillStyle = `rgba(98, 240, 255, ${alpha * 0.32})`;
+                    context.fillRect(stream.x - 5, y + stream.cellSize * 0.72, 3, 2);
+                }
+            }
+        });
+
+        context.shadowBlur = 0;
+    }
+}
+
 document.addEventListener("DOMContentLoaded", () => {
     const container = document.getElementById("bg-text-container");
     if (!container) return;
 
     let width = window.innerWidth;
     let height = window.innerHeight;
+    const dataStream = new DataStreamField(container, width, height);
 
     function handleResize() {
         width = window.innerWidth;
         height = window.innerHeight;
+        dataStream.resize(width, height);
     }
     window.addEventListener("resize", handleResize);
 
@@ -219,64 +318,10 @@ document.addEventListener("DOMContentLoaded", () => {
         mouse.active = false;
     });
 
-    // Kumpulan kata bertema Informatika Siliwangi (IF25 dominan)
-    const TEXT_POOL = [
-        "IF25", "IF25", "IF25", "IF25", 
-        "IF'25", "IF'25", 
-        "UNSIL", "UNSIL",
-        "INFORMATIKA", "INFORMATIKA", 
-        "IF25", "IF25", "UNSIL", "IF25"
-    ];
-
-    // Pembuatan Partikel Teks
-    const particles = [];
-    const maxParticles = width < 768 ? 8 : width < 1200 ? 14 : 22;
-
-    for (let i = 0; i < maxParticles; i++) {
-        const text = TEXT_POOL[Math.floor(Math.random() * TEXT_POOL.length)];
-        particles.push(new TextParticle(container, text));
-    }
-
-    // Letupan Sparks Teks saat layar diklik
-    let sparks = [];
-    const SPARK_TEXTS = ["IF25", "INF", "25", "IF", "*", "💻", "⚡"];
-
-    window.addEventListener("click", (e) => {
-        const target = e.target;
-        if (!target || typeof target.closest !== "function") return;
-        
-        // Jangan picu spark jika klik dilakukan di tombol/tautan
-        if (target.closest("a") || target.closest("button") || target.id === "particle-canvas") {
-            return; 
-        }
-
-        const colorClass = Math.random() > 0.45 ? "" : "blue-glow";
-        
-        // Spark minimal agar klik terasa premium, bukan mengganggu
-        for (let i = 0; i < 5; i++) {
-            const sparkText = SPARK_TEXTS[Math.floor(Math.random() * SPARK_TEXTS.length)];
-            sparks.push(new Spark(container, e.clientX, e.clientY, sparkText, colorClass));
-        }
-    });
-
     // Loop Animasi Utama (60 FPS GPU-Accelerated)
     function animate() {
-        // 1. Update & Render Sparks
-        for (let i = sparks.length - 1; i >= 0; i--) {
-            const s = sparks[i];
-            if (s.update()) {
-                s.draw();
-            } else {
-                s.remove();
-                sparks.splice(i, 1);
-            }
-        }
-
-        // 2. Update & Render Partikel Teks
-        particles.forEach(p => {
-            p.update(width, height, mouse);
-            p.draw();
-        });
+        // 1. Update & Render the connected light-particle field
+        dataStream.update(width, height, mouse);
 
         requestAnimationFrame(animate);
     }
